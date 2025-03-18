@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChatService } from '../../services/chat.service';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +20,13 @@ export class LoginComponent {
     if (this.username.trim()) {
       this.chatService.setUser(this.username.trim());
       this.router.navigate(['/chat']);
+    }
+  }
+
+  // При нажатии enter можно теперь активировать кнопку
+  onKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.login();
     }
   }
 }

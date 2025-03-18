@@ -1,5 +1,8 @@
 <div class="login-container">
   <h2>Вход в чат</h2>
-  <input type="text" [(ngModel)]="username" placeholder="Ваше имя">
+  <input type="text"
+         [(ngModel)]="username"
+         placeholder="Ваше имя"
+         (keydown)="onKeydown($event)">
   <button (click)="login()">Войти</button>
 </div>

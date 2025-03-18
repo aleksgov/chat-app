@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { ChatService, Message } from '../../services/chat.service';
 import { FormsModule } from '@angular/forms';
 import { DatePipe, NgForOf } from '@angular/common';
@@ -13,12 +13,14 @@ import { DatePipe, NgForOf } from '@angular/common';
   ],
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
+  @ViewChild('messageInput') private messageInput!: ElementRef;
   @ViewChild('messageList') private messageList!: ElementRef;
   messages: Message[] = [];
   newMessageText: string = '';
   user: string | null = null;
   private shouldScroll = false;
+  private isFirstLoad = true;
 
   constructor(
     private chatService: ChatService,
@@ -33,9 +35,21 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     this.chatService.messages$.subscribe(msgs => {
       this.messages = msgs;
-      this.shouldScroll = true; // Прокрутка при новых сообщениях в чате
+      if (!this.isFirstLoad) {
+        this.shouldScroll = true; // Прокрутка при новых сообщениях
+      }
+      this.isFirstLoad = false; // Устанавливаем флаг после первого получения сообщений
       this.cdr.detectChanges();
     });
+  }
+
+  ngAfterViewInit(): void {
+    // Добавление фокуса в поле ввода сообщений при входе
+    setTimeout(() => {
+      if (this.messageInput) {
+        this.messageInput.nativeElement.focus();
+      }
+    }, 0);
   }
 
   ngAfterViewChecked(): void {

@@ -18,6 +18,7 @@
     <input type="text"
            [(ngModel)]="newMessageText"
            (keydown)="onKeydown($event)"
+           #messageInput
            placeholder="Написать сообщение...">
     <button (click)="sendMessage()">Отправить</button>
   </div>
