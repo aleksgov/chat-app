@@ -1,0 +1,24 @@
+<div class="chat-container">
+  <div class="message-list" #messageList>
+    <div *ngFor="let message of messages"
+         class="message"
+         [class.user-message]="message.author === user">
+      <div class="message-bubble"
+           [class.other-message]="message.author !== user">
+        <div class="message-header">
+          <span class="author">{{ message.author }}</span>
+          <span class="timestamp">{{ message.timestamp | date:'HH:mm' }}</span>
+        </div>
+        <div class="message-text">{{ message.text }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="message-input">
+    <input type="text"
+           [(ngModel)]="newMessageText"
+           (keydown)="onKeydown($event)"
+           placeholder="Написать сообщение...">
+    <button (click)="sendMessage()">Отправить</button>
+  </div>
+</div>
